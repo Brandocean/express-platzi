@@ -2,14 +2,16 @@ const { faker } = require("@faker-js/faker");
 const boom = require('@hapi/boom');
 
 const pool = require('../libs/postgresPool')
+const sequelize = require('../libs/sequelize')
 
 class ProductService {
 
   constructor(){
     this.products = []
     this.generate()
-    this.pool = pool
-    this.pool.on('error', (err) => console.error(err))
+    //* Esto solo aplica si usas pool pero sequelize lo hace por detras
+    // this.pool = pool
+    // this.pool.on('error', (err) => console.error(err))
   }
 
   generate() {
@@ -44,8 +46,16 @@ class ProductService {
   //* Conexion con Pool
   async find() {
     const query = 'SELECT * FROM task'
-    const rta = await this.pool.query(query)
-    return rta.rows
+    //const rta = await this.pool.query(query)
+    //const [data, metadata] = await sequelize.query(query) //* Si tambien quieres medatada
+    const [data] = await sequelize.query(query)
+
+    return data
+    //* Si tambien quieres metadata
+    // return {
+    //   data,
+    //   metadata
+    // }
   }
 
   async findOne(id) {
