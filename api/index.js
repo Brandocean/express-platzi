@@ -1,7 +1,7 @@
 const express = require('express')
 const cors = require('cors')
 const routerApi = require('./routes') //* El index.js lo busca por defecto
-const { logErrors, errorHandler, boomErrorHandler } = require('./middlewares/errorHandler')
+const { logErrors, errorHandler, boomErrorHandler, ormErrorHandler } = require('./middlewares/errorHandler')
 const app = express()
 const port = process.env.PORT || 3000
 
@@ -32,6 +32,7 @@ routerApi(app)
 
 //* Middleware en el orden de ejecucion: primero logErrors y despues errorHandler
 app.use(logErrors)
+app.use(ormErrorHandler)
 app.use(boomErrorHandler)
 app.use(errorHandler)
 

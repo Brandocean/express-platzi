@@ -5,7 +5,6 @@ const router = express.Router()
 const ProductService = require('../services/productService')
 const validatorHandler = require('../middlewares/validatorHandler')
 const { createProductSchema, updateProductSchema, getProductSchema } = require('../schemas/productSchema')
-const { ge } = require('faker/lib/locales')
 
 const service = new ProductService()
 
