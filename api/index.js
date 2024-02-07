@@ -1,7 +1,9 @@
 const express = require('express')
 const cors = require('cors')
 const routerApi = require('./routes') //* El index.js lo busca por defecto
+const { checkApiKey } = require('./middlewares/authHandler')
 const { logErrors, errorHandler, boomErrorHandler, ormErrorHandler } = require('./middlewares/errorHandler')
+
 const app = express()
 const port = process.env.PORT || 3000
 
@@ -17,13 +19,15 @@ const options = {
     }
   }
 }
-app.use(cors())
+app.use(cors(options))
+
+require('./utils/auth');
 
 app.get('/api', (req, res) => {
   res.send('Hola este es mi server en Express')
 })
 
-app.get('/api/nueva-ruta', (req, res) => {
+app.get('/api/nueva-ruta', checkApiKey ,(req, res) => {
   res.send('Hola soy nueva ruta')
 })
 
