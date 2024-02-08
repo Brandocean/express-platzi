@@ -17,6 +17,24 @@ class OrderService {
     return newItem;
   }
 
+  async findByUser(userId) {
+    const orders = await models.Order.findAll({
+      //* El where de sequelize nos permite hacer una consulta para llegar hasta user
+      //* La consulta dice: trae todas las ordenes de este usuario
+      where: {
+        '$customer.user.id$': userId
+      },
+      include: [
+        {
+          association: 'customer',
+          include: ['user']
+        },
+        'items'
+      ]
+    });
+    return orders;
+  }
+
   async find() {
     return [];
   }
